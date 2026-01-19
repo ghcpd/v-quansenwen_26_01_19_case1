@@ -1,3 +1,15 @@
+Metadata-Version: 2.4
+Name: flowtask
+Version: 0.7.0
+Summary: Configuration-driven task runner for small text pipelines
+Author: FlowTask contributors
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+Requires-Dist: PyYAML>=6.0
+Requires-Dist: rich>=13.7.0
+Provides-Extra: test
+Requires-Dist: pytest>=8.0.0; extra == "test"
+
 # FlowTask
 
 FlowTask is a small, configuration-driven task runner for building repeatable text pipelines.
