@@ -7,42 +7,61 @@ This tutorial walks through building a small text pipeline using FlowTask.
 Create `pipeline.yml`:
 
 ```yaml
-workflow:
+pipeline:
   name: "book"
-  steps:
-    - name: "source"
+  tasks:
+    - id: "source"
       type: read_text
       path: "./book.txt"
 
-    - name: "clean"
+    - id: "clean"
       type: transform
-      plugin: replace
+      plugin: "builtin:replace"
       input: "@source.text"
       params:
         pattern: "\t"
         repl: " "
 
-    - name: "caps"
+    - id: "caps"
       type: transform
-      plugin: uppercase
+      plugin: "builtin:uppercase"
       input: "@clean.text"
 
-    - name: "save"
+    - id: "save"
       type: write_text
       path: "./book.cleaned.txt"
       input: "@caps.text"
 ```
 
+Create a sample input file `book.txt`:
+
+```text
+Hello	world	with	tabs
+```
+
 Validate:
 
 ```bash
-flowtask validate --config pipeline.yml
+flowtask validate --config-file pipeline.yml
+```
+
+Expected output:
+
+```text
+OK
 ```
 
 Run:
 
 ```bash
-flowtask run --config pipeline.yml
+flowtask execute --config-file pipeline.yml
+```
+
+Expected output:
+
+```text
+Executed pipeline: book
+Tasks: 4
 ```
 
 ## 2) Listing plugins
@@ -51,20 +70,29 @@ flowtask run --config pipeline.yml
 flowtask plugins
 ```
 
-You should see `uppercase`, `lowercase`, and `replace`.
+You should see `builtin:uppercase`, `builtin:lowercase`, and `builtin:replace` in a table.
 
 ## 3) JSON config
 
 You can also use JSON:
 
-```bash
-flowtask run --config pipeline.json
+```json
+{
+  "pipeline": {
+    "name": "demo",
+    "tasks": [
+      {
+        "id": "read",
+        "type": "read_text",
+        "path": "./input.txt"
+      }
+    ]
+  }
+}
 ```
 
-## 4) Concurrency
-
-By default FlowTask runs with 4 workers. You can reduce it:
+Run with:
 
 ```bash
-flowtask run --config pipeline.yml --workers 1
+flowtask execute --config-file pipeline.json
 ```

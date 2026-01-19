@@ -1,0 +1,16 @@
+workflow:
+  name: "demo"
+  steps:
+    - name: "read"
+      type: read_text
+      path: "./input.txt"
+
+    - name: "transform"
+      type: transform
+      plugin: uppercase
+      input: "@read.text"
+
+    - name: "write"
+      type: write_text
+      path: "./out.txt"
+      input: "@transform.text"
