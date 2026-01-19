@@ -1,0 +1,33 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "flowtask"
+version = "0.7.0"
+description = "Configuration-driven task runner for small text pipelines"
+readme = "README.md"
+requires-python = ">=3.10"
+authors = [{ name = "FlowTask contributors" }]
+dependencies = [
+  "PyYAML>=6.0",
+  "rich>=13.7.0",
+]
+
+[project.optional-dependencies]
+test = [
+  "pytest>=8.0.0",
+]
+
+[project.scripts]
+flowtask = "flowtask.cli:main"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+addopts = "-q"
+testpaths = ["tests"]
