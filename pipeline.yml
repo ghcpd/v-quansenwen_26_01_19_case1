@@ -1,0 +1,16 @@
+pipeline:
+  name: "demo"
+  tasks:
+    - id: "read"
+      type: read_text
+      path: "./input.txt"
+
+    - id: "transform"
+      type: transform
+      plugin: "builtin:uppercase"
+      input: "@read.text"
+
+    - id: "write"
+      type: write_text
+      path: "./out.txt"
+      input: "@transform.text"

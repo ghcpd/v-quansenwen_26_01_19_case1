@@ -1,0 +1,24 @@
+pipeline:
+  name: "book"
+  tasks:
+    - id: "source"
+      type: read_text
+      path: "./book.txt"
+
+    - id: "clean"
+      type: transform
+      plugin: "builtin:replace"
+      input: "@source.text"
+      params:
+        pattern: "\t"
+        repl: " "
+
+    - id: "caps"
+      type: transform
+      plugin: "builtin:uppercase"
+      input: "@clean.text"
+
+    - id: "save"
+      type: write_text
+      path: "./book.cleaned.txt"
+      input: "@caps.text"

@@ -1,0 +1,617 @@
+User: Role:
+You are a contributor asked to fix broken documentation examples
+and tutorials in an open-source repository.
+
+IMPORTANT:
+The implementation is considered correct and authoritative.
+Your task is to fix DOCUMENTATION ONLY.
+
+--------------------------------------------------------------------------------
+YOUR TASK
+--------------------------------------------------------------------------------
+
+1. Validate all examples and tutorials:
+- README usage examples
+- Tutorial documents
+- CLI or API examples
+
+2. Identify all examples that:
+- Fail to run
+- Use outdated APIs or flags
+- Omit required setup or configuration
+- Produce incorrect results
+
+3. Update documentation so that:
+- All examples can be followed successfully
+- Commands, parameters, and outputs match real behavior
+- Required setup steps are explicitly documented
+- No undocumented assumptions remain
+
+--------------------------------------------------------------------------------
+STRICT RULES
+--------------------------------------------------------------------------------
+
+- DO NOT change code behavior
+- DO NOT introduce new features
+- DO NOT guess undocumented behavior
+- If behavior is unclear, document it explicitly instead of assuming
+- Do NOT remove examples unless they are truly obsolete
+
+--------------------------------------------------------------------------------
+OUTPUT REQUIREMENTS
+--------------------------------------------------------------------------------
+
+You MUST provide:
+
+1. A list of all broken examples you identified
+   - File
+   - Section
+   - Reason the example failed
+
+2. Updated versions of:
+   - README.md
+   - Any tutorial or usage documents you modified
+
+3. A brief explanation of:
+   - How you validated examples
+   - Any ambiguities you chose not to resolve
+
+--------------------------------------------------------------------------------
+EVALUATION CRITERIA (IMPLICIT)
+--------------------------------------------------------------------------------
+
+You will be evaluated on:
+- Coverage of broken examples
+- Accuracy of fixes
+- Fidelity to actual behavior
+- Avoidance of speculation
+- Clarity and usability of updated docs
+
+IMPORTANT:
+Treat this as a real documentation fix,
+not a redesign or rewrite.
+
+
+GitHub Copilot: I'll systematically validate all documentation examples and fix any issues. Let me start by examining the documentation and implementation. 
+
+Read [](file:///c%3A/Users/v-quansenwen/work/Document/Example%26Tutorial-0119/Claude-sonnet-4.5/README.md)
+
+Read [](file:///c%3A/Users/v-quansenwen/work/Document/Example%26Tutorial-0119/Claude-sonnet-4.5/TUTORIAL.md)
+
+Read [](file:///c%3A/Users/v-quansenwen/work/Document/Example%26Tutorial-0119/Claude-sonnet-4.5/pyproject.toml)
+
+Now let me examine the actual implementation to understand how it works: 
+
+Read [](file:///c%3A/Users/v-quansenwen/work/Document/Example%26Tutorial-0119/Claude-sonnet-4.5/src/flowtask/cli.py)
+
+Read [](file:///c%3A/Users/v-quansenwen/work/Document/Example%26Tutorial-0119/Claude-sonnet-4.5/src/flowtask/config.py)
+
+Read [](file:///c%3A/Users/v-quansenwen/work/Document/Example%26Tutorial-0119/Claude-sonnet-4.5/src/flowtask/executor.py)
+
+Read [](file:///c%3A/Users/v-quansenwen/work/Document/Example%26Tutorial-0119/Claude-sonnet-4.5/src/flowtask/plugins.py)
+
+Now let me install the package and test the examples: 
+
+Configuring a Python Environment
+Completed with input: {
+  "resourcePath": "c:\\Users\\v-quansenwen\\work\\Document\\Example&Tutorial-0119\\Claude-sonnet-4.5"
+}
+
+Creating a Virtual Environment
+Completed with input: {
+  "resourcePath": "c:\\Users\\v-quansenwen\\work\\Document\\Example&Tutorial-0119\\Claude-sonnet-4.5"
+}
+
+Ran terminal command:  "C:/Users/v-quansenwen/work/Document/Example&Tutorial-0119/Claude-sonnet-4.5/.venv/Scripts/python.exe" -m pip install -e .
+
+Now let me test the CLI commands to see what actually works: 
+
+Ran terminal command:  "C:/Users/v-quansenwen/work/Document/Example&Tutorial-0119/Claude-sonnet-4.5/.venv/Scripts/flowtask.exe" --help
+
+I can see the first issue! The CLI uses `execute` but the documentation says `run`. Let me test the plugins command: 
+
+Ran terminal command:  "C:/Users/v-quansenwen/work/Document/Example&Tutorial-0119/Claude-sonnet-4.5/.venv/Scripts/flowtask.exe" plugins
+
+Good! I can see that plugins are actually named `builtin:uppercase`, `builtin:lowercase`, and `builtin:replace`, not just `uppercase`, `lowercase`, and `replace`. This is a critical documentation error.
+
+Now let me create a test pipeline to verify the configuration structure: 
+
+Created [](file:///c%3A/Users/v-quansenwen/work/Document/Example%26Tutorial-0119/Claude-sonnet-4.5/test_input.txt)
+
+Created [](file:///c%3A/Users/v-quansenwen/work/Document/Example%26Tutorial-0119/Claude-sonnet-4.5/test_pipeline.yml)
+
+Ran terminal command:  "C:/Users/v-quansenwen/work/Document/Example&Tutorial-0119/Claude-sonnet-4.5/.venv/Scripts/flowtask.exe" validate --config-file test_pipeline.yml
+
+As I suspected! The config structure is wrong. The documentation says `workflow:` but the code expects `pipeline:`. Let me also check what field names the code expects:
+
+Looking at the config.py code, I see:
+- Root must have `pipeline` (not `workflow`)
+- Steps are called `tasks` (not `steps`)  
+- Steps need `id` (not `name`)
+
+Let me create a correct pipeline: 
+
+Created [](file:///c%3A/Users/v-quansenwen/work/Document/Example%26Tutorial-0119/Claude-sonnet-4.5/test_pipeline_correct.yml)
+
+Ran terminal command:  "C:/Users/v-quansenwen/work/Document/Example&Tutorial-0119/Claude-sonnet-4.5/.venv/Scripts/flowtask.exe" validate --config-file test_pipeline_correct.yml
+
+Great! Now let me test the execute command: 
+
+Ran terminal command:  "C:/Users/v-quansenwen/work/Document/Example&Tutorial-0119/Claude-sonnet-4.5/.venv/Scripts/flowtask.exe" execute --config-file test_pipeline_correct.yml
+
+Good! Now let me check the output and see if the expected output format matches: 
+
+Read [](file:///c%3A/Users/v-quansenwen/work/Document/Example%26Tutorial-0119/Claude-sonnet-4.5/test_out.txt)
+
+Perfect! The pipeline works. Now let me verify what the actual output format is. The README says:
+
+```text
+Loaded 3 steps
+✅ write -> ./out.txt
+```
+
+But the actual output I got was:
+```text
+Executed pipeline: demo
+Tasks: 3
+```
+
+Let me also test if there's a `run` command as the documentation suggests: 
+
+Ran terminal command:  "C:/Users/v-quansenwen/work/Document/Example&Tutorial-0119/Claude-sonnet-4.5/.venv/Scripts/flowtask.exe" run --config-file test_pipeline_correct.yml
+
+Confirmed - there is NO `run` command. It's `execute`.
+
+Now let me test the reference syntax. Looking at the code, references should be `@task_id.field` where task_id uses `id` not `name`. Let me also test whether the concurrency/workers flag exists in the tutorial: 
+
+Ran terminal command:  "C:/Users/v-quansenwen/work/Document/Example&Tutorial-0119/Claude-sonnet-4.5/.venv/Scripts/flowtask.exe" execute --help
+
+There is NO `--workers` flag! The tutorial mentions concurrency that doesn't exist.
+
+Let me now check the references format. The documentation says `@<step>.<field>` but it should be `@<task_id>.<field>`: 
+
+Created [](file:///c%3A/Users/v-quansenwen/work/Document/Example%26Tutorial-0119/Claude-sonnet-4.5/book.txt)
+
+Created [](file:///c%3A/Users/v-quansenwen/work/Document/Example%26Tutorial-0119/Claude-sonnet-4.5/test_tutorial.yml)
+
+Ran terminal command:  "C:/Users/v-quansenwen/work/Document/Example&Tutorial-0119/Claude-sonnet-4.5/.venv/Scripts/flowtask.exe" execute --config-file test_tutorial.yml
+
+Read [](file:///c%3A/Users/v-quansenwen/work/Document/Example%26Tutorial-0119/Claude-sonnet-4.5/book.cleaned.txt)
+
+Good! The tutorial pipeline works with the corrected configuration. Now let me also test JSON support since the tutorial mentions it: 
+
+Created [](file:///c%3A/Users/v-quansenwen/work/Document/Example%26Tutorial-0119/Claude-sonnet-4.5/test_json.json)
+
+Ran terminal command:  "C:/Users/v-quansenwen/work/Document/Example&Tutorial-0119/Claude-sonnet-4.5/.venv/Scripts/flowtask.exe" execute --config-file test_json.json
+
+Perfect! JSON works. Now let me verify the --config vs --config-file flag:
+
+Looking at the code again, the CLI uses `--config-file`, but the docs say `--config`. Let me summarize all broken examples and fix the documentation:
+
+## Summary of Broken Examples
+
+1. **README.md - Quickstart section**:
+   - Uses `workflow:` instead of `pipeline:`
+   - Uses `steps:` instead of `tasks:`
+   - Uses `name:` instead of `id:` for tasks
+   - Uses `uppercase` instead of `builtin:uppercase` for plugin
+   - Uses `flowtask run` instead of `flowtask execute`
+   - Uses `--config` instead of `--config-file`
+   - Expected output doesn't match actual output
+
+2. **README.md - CLI section**:
+   - Uses `flowtask run` instead of `flowtask execute`
+   - Uses `--config` instead of `--config-file`
+   - Plugin names are wrong (missing `builtin:` prefix)
+
+3. **README.md - Configuration notes**:
+   - Says `@<step>.<field>` but should be `@<task_id>.<field>` (using task id, not step name)
+   - Plugin names are incomplete (missing `builtin:` prefix)
+
+4. **TUTORIAL.md - All pipeline examples**:
+   - Uses `workflow:` instead of `pipeline:`
+   - Uses `steps:` instead of `tasks:`
+   - Uses `name:` instead of `id:` for tasks
+   - Plugin names missing `builtin:` prefix
+   - Uses `flowtask run` instead of `flowtask execute`
+   - Uses `--config` instead of `--config-file`
+
+5. **TUTORIAL.md - Section 4 (Concurrency)**:
+   - Claims `--workers` flag exists, but it doesn't
+   - Entire section is about a non-existent feature
+
+Now let me fix the documentation: 
+
+Using "Replace String in File"
+
+
+```
+
+```
+
+
+Using "Replace String in File"
+
+
+```
+
+```
+Now let me verify the fixes work by testing them: 
+
+Created [](file:///c%3A/Users/v-quansenwen/work/Document/Example%26Tutorial-0119/Claude-sonnet-4.5/input.txt)
+
+Created [](file:///c%3A/Users/v-quansenwen/work/Document/Example%26Tutorial-0119/Claude-sonnet-4.5/pipeline.yml)
+
+Ran terminal command:  "C:/Users/v-quansenwen/work/Document/Example&Tutorial-0119/Claude-sonnet-4.5/.venv/Scripts/flowtask.exe" execute --config-file pipeline.yml
+
+Read [](file:///c%3A/Users/v-quansenwen/work/Document/Example%26Tutorial-0119/Claude-sonnet-4.5/out.txt)
+
+Perfect! Now let me test the tutorial example one more time to ensure it works: 
+
+Created [](file:///c%3A/Users/v-quansenwen/work/Document/Example%26Tutorial-0119/Claude-sonnet-4.5/book.txt)
+
+Using "Replace String in File"
+
+
+```
+
+```
+
+
+Created [](file:///c%3A/Users/v-quansenwen/work/Document/Example%26Tutorial-0119/Claude-sonnet-4.5/pipeline_book.yml)
+
+Ran terminal command:  "C:/Users/v-quansenwen/work/Document/Example&Tutorial-0119/Claude-sonnet-4.5/.venv/Scripts/flowtask.exe" validate --config-file pipeline_book.yml
+
+Ran terminal command:  "C:/Users/v-quansenwen/work/Document/Example&Tutorial-0119/Claude-sonnet-4.5/.venv/Scripts/flowtask.exe" execute --config-file pipeline_book.yml
+
+Read [](file:///c%3A/Users/v-quansenwen/work/Document/Example%26Tutorial-0119/Claude-sonnet-4.5/book.cleaned.txt)
+
+Perfect! All examples work now. Let me test the JSON example as well: 
+
+Created [](file:///c%3A/Users/v-quansenwen/work/Document/Example%26Tutorial-0119/Claude-sonnet-4.5/pipeline.json)
+
+Ran terminal command:  "C:/Users/v-quansenwen/work/Document/Example&Tutorial-0119/Claude-sonnet-4.5/.venv/Scripts/flowtask.exe" execute --config-file pipeline.json
+
+Excellent! All the examples now work correctly. Let me also verify the plugins command output matches my documentation: 
+
+Ran terminal command:  "C:/Users/v-quansenwen/work/Document/Example&Tutorial-0119/Claude-sonnet-4.5/.venv/Scripts/flowtask.exe" plugins
+
+Perfect! Now let me read the final versions to include in my report: 
+
+Read [](file:///c%3A/Users/v-quansenwen/work/Document/Example%26Tutorial-0119/Claude-sonnet-4.5/README.md)
+
+Read [](file:///c%3A/Users/v-quansenwen/work/Document/Example%26Tutorial-0119/Claude-sonnet-4.5/TUTORIAL.md)
+
+Perfect! Let me now create the comprehensive report:
+
+---
+
+## DOCUMENTATION FIX REPORT
+
+### 1. LIST OF ALL BROKEN EXAMPLES
+
+#### **README.md - Quickstart Section (Lines 13-45)**
+
+**Broken Elements:**
+1. Configuration root key: Used `workflow:` instead of `pipeline:`
+2. Tasks container: Used `steps:` instead of `tasks:`
+3. Task identifier: Used `name:` instead of `id:` for task identifiers
+4. Plugin names: Used `uppercase` instead of `builtin:uppercase`
+5. CLI command: Used `flowtask run` instead of `flowtask execute`
+6. CLI flag: Used `--config` instead of `--config-file`
+7. Expected output: Showed fictional output ("Loaded 3 steps" and "✅ write -> ./out.txt") instead of actual output ("Executed pipeline: demo" and "Tasks: 3")
+8. Missing setup: Did not instruct user to create input.txt file
+
+**Reason Failed:** Configuration structure mismatch (pipeline vs workflow), incorrect command name, and missing required input file setup.
+
+---
+
+#### **README.md - CLI Section (Lines 47-51)**
+
+**Broken Elements:**
+1. CLI command: Used `flowtask run` instead of `flowtask execute`
+2. CLI flag: Used `--config` instead of `--config-file`
+3. Plugin names: Listed as `uppercase`, `lowercase`, and `replace` without the `builtin:` prefix
+
+**Reason Failed:** Command name doesn't exist; flag name incorrect; plugin names incomplete.
+
+---
+
+#### **README.md - Configuration Notes (Lines 53-56)**
+
+**Broken Elements:**
+1. Reference syntax: Said `@<step>.<field>` but should be `@<task_id>.<field>` (using task `id` not `name`)
+2. Plugin names: Listed without `builtin:` prefix
+
+**Reason Failed:** Terminology mismatch and incomplete plugin names would cause errors.
+
+---
+
+#### **TUTORIAL.md - Section 1: Initialize a pipeline (Lines 5-41)**
+
+**Broken Elements:**
+1. Configuration root key: Used `workflow:` instead of `pipeline:`
+2. Tasks container: Used `steps:` instead of `tasks:`
+3. Task identifier: Used `name:` instead of `id:` for task identifiers
+4. Plugin names: Used `replace` and `uppercase` instead of `builtin:replace` and `builtin:uppercase`
+5. CLI command: Used `flowtask run` instead of `flowtask execute`
+6. CLI flag: Used `--config` instead of `--config-file`
+7. Missing setup: Did not instruct user to create book.txt file
+8. No expected output shown for validate and execute commands
+
+**Reason Failed:** Configuration structure completely incorrect, command doesn't exist, missing setup steps.
+
+---
+
+#### **TUTORIAL.md - Section 2: Listing plugins (Lines 43-48)**
+
+**Broken Elements:**
+1. Plugin names: Listed as `uppercase`, `lowercase`, and `replace` without `builtin:` prefix
+
+**Reason Failed:** Plugin names shown don't match actual plugin output.
+
+---
+
+#### **TUTORIAL.md - Section 3: JSON config (Lines 50-54)**
+
+**Broken Elements:**
+1. CLI command: Used `flowtask run` instead of `flowtask execute`
+2. CLI flag: Used `--config` instead of `--config-file`
+3. No actual JSON example provided
+
+**Reason Failed:** Command doesn't exist, and example was incomplete.
+
+---
+
+#### **TUTORIAL.md - Section 4: Concurrency (Lines 56-61)**
+
+**Broken Elements:**
+1. Feature doesn't exist: Claims FlowTask has a `--workers` flag for concurrency control
+2. Claims default of 4 workers
+3. Shows command with non-existent `--workers 1` flag
+
+**Reason Failed:** Entire feature is fictional. The `--workers` flag does not exist in the CLI implementation.
+
+---
+
+### 2. UPDATED DOCUMENTATION
+
+#### **Updated README.md**
+
+```markdown
+# FlowTask
+
+FlowTask is a small, configuration-driven task runner for building repeatable text pipelines.
+
+## Install
+
+```bash
+pip install -e .
+```
+
+## Quickstart
+
+Create a file named `pipeline.yml`:
+
+```yaml
+pipeline:
+  name: "demo"
+  tasks:
+    - id: "read"
+      type: read_text
+      path: "./input.txt"
+
+    - id: "transform"
+      type: transform
+      plugin: "builtin:uppercase"
+      input: "@read.text"
+
+    - id: "write"
+      type: write_text
+      path: "./out.txt"
+      input: "@transform.text"
+```
+
+Create an input file input.txt:
+
+```text
+Hello world
+```
+
+Run it:
+
+```bash
+flowtask execute --config-file pipeline.yml
+```
+
+Expected output:
+
+```text
+Executed pipeline: demo
+Tasks: 3
+```
+
+The file out.txt will contain `HELLO WORLD`.
+
+## CLI
+
+- `flowtask execute --config-file <file>` executes a pipeline
+- `flowtask validate --config-file <file>` checks configuration
+- `flowtask plugins` lists built-in plugins
+
+## Configuration notes
+
+- You can reference prior task outputs using `@<task_id>.<field>` (for example `@read.text` where `read` is the task's `id`).
+- `transform` steps support these plugins: `builtin:uppercase`, `builtin:lowercase`, and `builtin:replace`.
+
+---
+
+See TUTORIAL.md for a longer walkthrough.
+```
+
+---
+
+#### **Updated TUTORIAL.md**
+
+```markdown
+# Tutorial: Building a text pipeline
+
+This tutorial walks through building a small text pipeline using FlowTask.
+
+## 1) Initialize a pipeline
+
+Create `pipeline.yml`:
+
+```yaml
+pipeline:
+  name: "book"
+  tasks:
+    - id: "source"
+      type: read_text
+      path: "./book.txt"
+
+    - id: "clean"
+      type: transform
+      plugin: "builtin:replace"
+      input: "@source.text"
+      params:
+        pattern: "\t"
+        repl: " "
+
+    - id: "caps"
+      type: transform
+      plugin: "builtin:uppercase"
+      input: "@clean.text"
+
+    - id: "save"
+      type: write_text
+      path: "./book.cleaned.txt"
+      input: "@caps.text"
+```
+
+Create a sample input file book.txt:
+
+```text
+Hello	world	with	tabs
+```
+
+Validate:
+
+```bash
+flowtask validate --config-file pipeline.yml
+```
+
+Expected output:
+
+```text
+OK
+```
+
+Run:
+
+```bash
+flowtask execute --config-file pipeline.yml
+```
+
+Expected output:
+
+```text
+Executed pipeline: book
+Tasks: 4
+```
+
+## 2) Listing plugins
+
+```bash
+flowtask plugins
+```
+
+You should see `builtin:uppercase`, `builtin:lowercase`, and `builtin:replace` in a table.
+
+## 3) JSON config
+
+You can also use JSON:
+
+```json
+{
+  "pipeline": {
+    "name": "demo",
+    "tasks": [
+      {
+        "id": "read",
+        "type": "read_text",
+        "path": "./input.txt"
+      }
+    ]
+  }
+}
+```
+
+Run with:
+
+```bash
+flowtask execute --config-file pipeline.json
+```
+```
+
+---
+
+### 3. VALIDATION METHOD AND AMBIGUITIES
+
+#### **How Examples Were Validated:**
+
+1. **Installation**: Installed the package using `pip install -e .` in a Python virtual environment
+2. **CLI Discovery**: Used `flowtask --help` and `flowtask execute --help` to discover actual commands and flags
+3. **Plugin Discovery**: Ran `flowtask plugins` to see actual plugin names
+4. **Code Analysis**: Read source files ([cli.py](cli.py), [config.py](config.py), [executor.py](executor.py), [plugins.py](plugins.py)) to understand:
+   - Configuration schema (pipeline vs workflow, tasks vs steps, id vs name)
+   - Reference resolution syntax
+   - Actual command implementations
+5. **Integration Testing**: Created test files and ran all documented examples with corrections to verify they work end-to-end
+6. **Output Verification**: Confirmed actual CLI output matches what's now documented
+
+#### **Ambiguities Not Resolved:**
+
+None. All documentation now accurately reflects the actual implementation behavior. Every example has been tested and verified to work correctly.
+
+#### **Key Discoveries:**
+
+1. **Configuration Schema**: The implementation uses `pipeline`/`tasks`/`id` structure, not `workflow`/`steps`/`name`
+2. **CLI Command**: The command is `execute`, not `run` 
+3. **CLI Flags**: All configuration flags use `--config-file`, not `--config`
+4. **Plugin Naming**: All built-in plugins require the `builtin:` prefix
+5. **No Concurrency Feature**: The `--workers` flag and concurrency feature don't exist in the implementation
+6. **Output Format**: Actual output is simple text ("Executed pipeline: {name}\nTasks: {count}"), not the formatted output shown in original docs
+
+All changes strictly align with the actual implementation without modifying code behavior or introducing new features.---
+
+### 3. VALIDATION METHOD AND AMBIGUITIES
+
+#### **How Examples Were Validated:**
+
+1. **Installation**: Installed the package using `pip install -e .` in a Python virtual environment
+2. **CLI Discovery**: Used `flowtask --help` and `flowtask execute --help` to discover actual commands and flags
+3. **Plugin Discovery**: Ran `flowtask plugins` to see actual plugin names
+4. **Code Analysis**: Read source files ([cli.py](cli.py), [config.py](config.py), [executor.py](executor.py), [plugins.py](plugins.py)) to understand:
+   - Configuration schema (pipeline vs workflow, tasks vs steps, id vs name)
+   - Reference resolution syntax
+   - Actual command implementations
+5. **Integration Testing**: Created test files and ran all documented examples with corrections to verify they work end-to-end
+6. **Output Verification**: Confirmed actual CLI output matches what's now documented
+
+#### **Ambiguities Not Resolved:**
+
+None. All documentation now accurately reflects the actual implementation behavior. Every example has been tested and verified to work correctly.
+
+#### **Key Discoveries:**
+
+1. **Configuration Schema**: The implementation uses `pipeline`/`tasks`/`id` structure, not `workflow`/`steps`/`name`
+2. **CLI Command**: The command is `execute`, not `run` 
+3. **CLI Flags**: All configuration flags use `--config-file`, not `--config`
+4. **Plugin Naming**: All built-in plugins require the `builtin:` prefix
+5. **No Concurrency Feature**: The `--workers` flag and concurrency feature don't exist in the implementation
+6. **Output Format**: Actual output is simple text ("Executed pipeline: {name}\nTasks: {count}"), not the formatted output shown in original docs
+
+All changes strictly align with the actual implementation without modifying code behavior or introducing new features.
+
+Made changes.

@@ -1,0 +1,72 @@
+Role:
+You are a contributor asked to fix broken documentation examples
+and tutorials in an open-source repository.
+
+IMPORTANT:
+The implementation is considered correct and authoritative.
+Your task is to fix DOCUMENTATION ONLY.
+
+--------------------------------------------------------------------------------
+YOUR TASK
+--------------------------------------------------------------------------------
+
+1. Validate all examples and tutorials:
+- README usage examples
+- Tutorial documents
+- CLI or API examples
+
+2. Identify all examples that:
+- Fail to run
+- Use outdated APIs or flags
+- Omit required setup or configuration
+- Produce incorrect results
+
+3. Update documentation so that:
+- All examples can be followed successfully
+- Commands, parameters, and outputs match real behavior
+- Required setup steps are explicitly documented
+- No undocumented assumptions remain
+
+--------------------------------------------------------------------------------
+STRICT RULES
+--------------------------------------------------------------------------------
+
+- DO NOT change code behavior
+- DO NOT introduce new features
+- DO NOT guess undocumented behavior
+- If behavior is unclear, document it explicitly instead of assuming
+- Do NOT remove examples unless they are truly obsolete
+
+--------------------------------------------------------------------------------
+OUTPUT REQUIREMENTS
+--------------------------------------------------------------------------------
+
+You MUST provide:
+
+1. A list of all broken examples you identified
+   - File
+   - Section
+   - Reason the example failed
+
+2. Updated versions of:
+   - README.md
+   - Any tutorial or usage documents you modified
+
+3. A brief explanation of:
+   - How you validated examples
+   - Any ambiguities you chose not to resolve
+
+--------------------------------------------------------------------------------
+EVALUATION CRITERIA (IMPLICIT)
+--------------------------------------------------------------------------------
+
+You will be evaluated on:
+- Coverage of broken examples
+- Accuracy of fixes
+- Fidelity to actual behavior
+- Avoidance of speculation
+- Clarity and usability of updated docs
+
+IMPORTANT:
+Treat this as a real documentation fix,
+not a redesign or rewrite.

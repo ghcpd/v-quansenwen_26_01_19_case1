@@ -13,47 +13,55 @@ pip install -e .
 Create a file named `pipeline.yml`:
 
 ```yaml
-workflow:
+pipeline:
   name: "demo"
-  steps:
-    - name: "read"
+  tasks:
+    - id: "read"
       type: read_text
       path: "./input.txt"
 
-    - name: "transform"
+    - id: "transform"
       type: transform
-      plugin: uppercase
+      plugin: "builtin:uppercase"
       input: "@read.text"
 
-    - name: "write"
+    - id: "write"
       type: write_text
       path: "./out.txt"
       input: "@transform.text"
 ```
 
+Create an input file `input.txt`:
+
+```text
+Hello world
+```
+
 Run it:
 
 ```bash
-flowtask run --config pipeline.yml
+flowtask execute --config-file pipeline.yml
 ```
 
 Expected output:
 
 ```text
-Loaded 3 steps
-✅ write -> ./out.txt
+Executed pipeline: demo
+Tasks: 3
 ```
+
+The file `out.txt` will contain `HELLO WORLD`.
 
 ## CLI
 
-- `flowtask run --config <file>` runs a pipeline
-- `flowtask validate --config <file>` checks configuration
-- `flowtask plugins` lists built-ins
+- `flowtask execute --config-file <file>` executes a pipeline
+- `flowtask validate --config-file <file>` checks configuration
+- `flowtask plugins` lists built-in plugins
 
 ## Configuration notes
 
-- You can reference prior outputs using `@<step>.<field>` (for example `@read.text`).
-- `transform` steps support `uppercase`, `lowercase`, and `replace`.
+- You can reference prior task outputs using `@<task_id>.<field>` (for example `@read.text` where `read` is the task's `id`).
+- `transform` steps support these plugins: `builtin:uppercase`, `builtin:lowercase`, and `builtin:replace`.
 
 ---
 
