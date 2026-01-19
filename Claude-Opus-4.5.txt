@@ -1,0 +1,222 @@
+User: Role:
+You are a contributor asked to fix broken documentation examples
+and tutorials in an open-source repository.
+
+IMPORTANT:
+The implementation is considered correct and authoritative.
+Your task is to fix DOCUMENTATION ONLY.
+
+--------------------------------------------------------------------------------
+YOUR TASK
+--------------------------------------------------------------------------------
+
+1. Validate all examples and tutorials:
+- README usage examples
+- Tutorial documents
+- CLI or API examples
+
+2. Identify all examples that:
+- Fail to run
+- Use outdated APIs or flags
+- Omit required setup or configuration
+- Produce incorrect results
+
+3. Update documentation so that:
+- All examples can be followed successfully
+- Commands, parameters, and outputs match real behavior
+- Required setup steps are explicitly documented
+- No undocumented assumptions remain
+
+--------------------------------------------------------------------------------
+STRICT RULES
+--------------------------------------------------------------------------------
+
+- DO NOT change code behavior
+- DO NOT introduce new features
+- DO NOT guess undocumented behavior
+- If behavior is unclear, document it explicitly instead of assuming
+- Do NOT remove examples unless they are truly obsolete
+
+--------------------------------------------------------------------------------
+OUTPUT REQUIREMENTS
+--------------------------------------------------------------------------------
+
+You MUST provide:
+
+1. A list of all broken examples you identified
+   - File
+   - Section
+   - Reason the example failed
+
+2. Updated versions of:
+   - README.md
+   - Any tutorial or usage documents you modified
+
+3. A brief explanation of:
+   - How you validated examples
+   - Any ambiguities you chose not to resolve
+
+--------------------------------------------------------------------------------
+EVALUATION CRITERIA (IMPLICIT)
+--------------------------------------------------------------------------------
+
+You will be evaluated on:
+- Coverage of broken examples
+- Accuracy of fixes
+- Fidelity to actual behavior
+- Avoidance of speculation
+- Clarity and usability of updated docs
+
+IMPORTANT:
+Treat this as a real documentation fix,
+not a redesign or rewrite.
+
+
+GitHub Copilot: Read [](file:///c%3A/Users/v-quansenwen/work/Document/Example%26Tutorial-0119/Claude-Opus-4.5/README.md)
+
+Read [](file:///c%3A/Users/v-quansenwen/work/Document/Example%26Tutorial-0119/Claude-Opus-4.5/TUTORIAL.md)
+
+Read [](file:///c%3A/Users/v-quansenwen/work/Document/Example%26Tutorial-0119/Claude-Opus-4.5/src/flowtask/cli.py)
+
+Read [](file:///c%3A/Users/v-quansenwen/work/Document/Example%26Tutorial-0119/Claude-Opus-4.5/src/flowtask/config.py)
+
+Now let me read the remaining source files to fully understand the implementation: 
+
+Read [](file:///c%3A/Users/v-quansenwen/work/Document/Example%26Tutorial-0119/Claude-Opus-4.5/src/flowtask/executor.py)
+
+Read [](file:///c%3A/Users/v-quansenwen/work/Document/Example%26Tutorial-0119/Claude-Opus-4.5/src/flowtask/plugins.py)
+
+Read [](file:///c%3A/Users/v-quansenwen/work/Document/Example%26Tutorial-0119/Claude-Opus-4.5/src/flowtask/__main__.py)
+
+Read [](file:///c%3A/Users/v-quansenwen/work/Document/Example%26Tutorial-0119/Claude-Opus-4.5/pyproject.toml)
+
+Now I have a complete understanding of the codebase. Let me summarize the discrepancies I found between the documentation and the actual implementation:
+
+## Broken Examples Identified
+
+| File | Section | Reason the example failed |
+|------|---------|---------------------------|
+| README.md | Quickstart YAML config | Uses `workflow` and `steps` keys instead of `pipeline` and `tasks`. Uses `name` for step name instead of `id`. Plugin names should be `builtin:uppercase` not `uppercase`. |
+| README.md | CLI section | Uses `flowtask run --config` instead of `flowtask execute --config-file` |
+| README.md | Configuration notes | Plugin names should be `builtin:uppercase`, `builtin:lowercase`, `builtin:replace` |
+| TUTORIAL.md | Pipeline YAML config | Same issues: uses `workflow`/`steps`/`name` instead of `pipeline`/`tasks`/`id`. Plugin names wrong. |
+| TUTORIAL.md | Validate command | Uses `--config` instead of `--config-file` |
+| TUTORIAL.md | Run command | Uses `flowtask run --config` instead of `flowtask execute --config-file` |
+| TUTORIAL.md | Listing plugins | Output shows wrong plugin names (should have `builtin:` prefix) |
+| TUTORIAL.md | Concurrency section | `--workers` flag does not exist in CLI |
+
+Now I'll fix both documentation files: 
+
+Using "Replace String in File"
+
+
+```
+
+```
+
+
+Using "Replace String in File"
+
+
+```
+
+```
+Now let me verify the changes by reading the updated files and testing the CLI to confirm behavior: 
+
+Configuring a Python Environment
+Completed with input: {
+  "resourcePath": "c:\\Users\\v-quansenwen\\work\\Document\\Example&Tutorial-0119\\Claude-Opus-4.5"
+}
+
+Creating a Virtual Environment
+Completed with input: {
+  "resourcePath": "c:\\Users\\v-quansenwen\\work\\Document\\Example&Tutorial-0119\\Claude-Opus-4.5"
+}
+
+Ran terminal command:  pip install -e . -q
+
+Ran terminal command:  "C:/Users/v-quansenwen/work/Document/Example&Tutorial-0119/Claude-Opus-4.5/.venv/Scripts/python.exe" -m pip install -e . -q
+
+Ran terminal command:  "C:/Users/v-quansenwen/work/Document/Example&Tutorial-0119/Claude-Opus-4.5/.venv/Scripts/python.exe" -m flowtask plugins
+
+Ran terminal command:  "C:/Users/v-quansenwen/work/Document/Example&Tutorial-0119/Claude-Opus-4.5/.venv/Scripts/python.exe" -m flowtask --help
+
+Ran terminal command:  "C:/Users/v-quansenwen/work/Document/Example&Tutorial-0119/Claude-Opus-4.5/.venv/Scripts/python.exe" -m flowtask execute --help
+
+Let me now create a test pipeline file and validate it works correctly: 
+
+Ran terminal command:  echo "hello world" > input.txt
+
+Created [](file:///c%3A/Users/v-quansenwen/work/Document/Example%26Tutorial-0119/Claude-Opus-4.5/test_pipeline.yml)
+
+Ran terminal command:  "C:/Users/v-quansenwen/work/Document/Example&Tutorial-0119/Claude-Opus-4.5/.venv/Scripts/python.exe" -m flowtask validate --config-file test_pipeline.yml
+
+Ran terminal command:  "C:/Users/v-quansenwen/work/Document/Example&Tutorial-0119/Claude-Opus-4.5/.venv/Scripts/python.exe" -m flowtask execute --config-file test_pipeline.yml
+
+The pipeline executes correctly. Let me clean up the test files: 
+
+Ran terminal command:  rm -f input.txt out.txt test_pipeline.yml
+
+Now let me read the updated files to confirm the changes: 
+
+Read [](file:///c%3A/Users/v-quansenwen/work/Document/Example%26Tutorial-0119/Claude-Opus-4.5/README.md#1-1), lines 1 to 60
+
+Read [](file:///c%3A/Users/v-quansenwen/work/Document/Example%26Tutorial-0119/Claude-Opus-4.5/TUTORIAL.md#1-1), lines 1 to 60
+
+Both files have been updated correctly. Here is my summary:
+
+---
+
+## Summary of Documentation Fixes
+
+### 1. Broken Examples Identified
+
+| File | Section | Reason Example Failed |
+|------|---------|----------------------|
+| README.md | Quickstart YAML | Config used `workflow` key instead of `pipeline`; used `steps` instead of `tasks`; used `name` for task identifier instead of `id`; plugin names were `uppercase` instead of `builtin:uppercase` |
+| README.md | CLI Commands | Used `flowtask run --config` instead of `flowtask execute --config-file` |
+| README.md | Expected Output | Showed "Loaded 3 steps / ✅ write -> ./out.txt" but actual output is "Executed pipeline: demo / Tasks: 3" |
+| README.md | Configuration Notes | Plugin names listed as `uppercase`, `lowercase`, `replace` instead of `builtin:uppercase`, `builtin:lowercase`, `builtin:replace`; terminology used "step" instead of "task" |
+| TUTORIAL.md | Pipeline YAML | Same structural issues as README: `workflow`→`pipeline`, `steps`→`tasks`, `name`→`id`, incorrect plugin names |
+| TUTORIAL.md | Validate Command | Used `--config` instead of `--config-file` |
+| TUTORIAL.md | Run Command | Used `flowtask run --config` instead of `flowtask execute --config-file` |
+| TUTORIAL.md | Plugin Listing | Listed wrong plugin names |
+| TUTORIAL.md | Concurrency Section | `--workers` flag does not exist in CLI - **Section removed** |
+
+### 2. Changes Made
+
+**README.md:**
+- Changed config key `workflow` → `pipeline`
+- Changed config key `steps` → `tasks`
+- Changed task identifier key `name` → `id`
+- Changed CLI command `run` → `execute`
+- Changed CLI flag `--config` → `--config-file`
+- Updated plugin names to include `builtin:` prefix
+- Fixed expected output to match actual behavior
+- Changed terminology from "step" to "task" in configuration notes
+
+**TUTORIAL.md:**
+- Applied all the same fixes as README.md
+- Fixed plugin names in the example output
+- Removed the "Concurrency" section (Section 4) because the `--workers` flag does not exist in the implementation
+
+### 3. Validation Method
+
+1. Read all source files to understand the actual implementation:
+   - cli.py: Verified CLI commands (`execute`, `validate`, `plugins`) and flag names (`--config-file`)
+   - config.py: Verified config structure expects `pipeline` object with `tasks` array, each task having `id` field
+   - plugins.py: Verified plugin names are `builtin:uppercase`, `builtin:lowercase`, `builtin:replace`
+   - executor.py: Confirmed execution behavior and output format
+
+2. Installed the package and ran CLI commands to confirm:
+   - `flowtask --help` - confirmed command structure
+   - `flowtask execute --help` - confirmed `--config-file` flag
+   - `flowtask plugins` - confirmed plugin names with `builtin:` prefix
+   - Created a test pipeline and executed it to confirm output format
+
+### 4. Ambiguities Not Resolved
+
+- The `--quiet` flag exists in the CLI but is not documented. I did not add it since the task was to fix broken examples, not add new documentation.
+- No JSON example is provided in the docs (TUTORIAL.md mentions it but no sample shown). I left this as-is since providing a new example would be adding content rather than fixing existing content.
+
+Made changes.
