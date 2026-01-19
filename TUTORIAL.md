@@ -4,30 +4,30 @@ This tutorial walks through building a small text pipeline using FlowTask.
 
 ## 1) Initialize a pipeline
 
-Create `pipeline.yml`:
+Create `pipeline.yml` (ensure `./book.txt` exists):
 
 ```yaml
-workflow:
+pipeline:
   name: "book"
-  steps:
-    - name: "source"
+  tasks:
+    - id: "source"
       type: read_text
       path: "./book.txt"
 
-    - name: "clean"
+    - id: "clean"
       type: transform
-      plugin: replace
+      plugin: "builtin:replace"
       input: "@source.text"
       params:
         pattern: "\t"
         repl: " "
 
-    - name: "caps"
+    - id: "caps"
       type: transform
-      plugin: uppercase
+      plugin: "builtin:uppercase"
       input: "@clean.text"
 
-    - name: "save"
+    - id: "save"
       type: write_text
       path: "./book.cleaned.txt"
       input: "@caps.text"
@@ -36,13 +36,13 @@ workflow:
 Validate:
 
 ```bash
-flowtask validate --config pipeline.yml
+flowtask validate --config-file pipeline.yml
 ```
 
 Run:
 
 ```bash
-flowtask run --config pipeline.yml
+flowtask execute --config-file pipeline.yml
 ```
 
 ## 2) Listing plugins
@@ -51,20 +51,38 @@ flowtask run --config pipeline.yml
 flowtask plugins
 ```
 
-You should see `uppercase`, `lowercase`, and `replace`.
+You should see `builtin:lowercase`, `builtin:replace`, and `builtin:uppercase`.
 
 ## 3) JSON config
 
-You can also use JSON:
+You can also use JSON. Example `pipeline.json`:
 
-```bash
-flowtask run --config pipeline.json
+```json
+{
+  "pipeline": {
+    "name": "book",
+    "tasks": [
+      {"id": "source", "type": "read_text", "path": "./book.txt"},
+      {
+        "id": "clean",
+        "type": "transform",
+        "plugin": "builtin:replace",
+        "input": "@source.text",
+        "params": {"pattern": "\t", "repl": " "}
+      },
+      {"id": "caps", "type": "transform", "plugin": "builtin:uppercase", "input": "@clean.text"},
+      {"id": "save", "type": "write_text", "path": "./book.cleaned.txt", "input": "@caps.text"}
+    ]
+  }
+}
 ```
 
-## 4) Concurrency
-
-By default FlowTask runs with 4 workers. You can reduce it:
+Run it with:
 
 ```bash
-flowtask run --config pipeline.yml --workers 1
+flowtask execute --config-file pipeline.json
 ```
+
+## 4) Execution model
+
+FlowTask executes tasks sequentially in the order they appear in `pipeline.tasks`. Concurrency and worker settings are not currently supported, and `--workers` is not a recognized flag.
