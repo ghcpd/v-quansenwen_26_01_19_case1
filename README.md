@@ -10,50 +10,54 @@ pip install -e .
 
 ## Quickstart
 
-Create a file named `pipeline.yml`:
+Create a file named `pipeline.yml` (the input file must already exist):
 
 ```yaml
-workflow:
+pipeline:
   name: "demo"
-  steps:
-    - name: "read"
+  tasks:
+    - id: "read"
       type: read_text
       path: "./input.txt"
 
-    - name: "transform"
+    - id: "upper"
       type: transform
-      plugin: uppercase
+      plugin: "builtin:uppercase"
       input: "@read.text"
 
-    - name: "write"
+    - id: "write"
       type: write_text
       path: "./out.txt"
-      input: "@transform.text"
+      input: "@upper.text"
 ```
 
 Run it:
 
 ```bash
-flowtask run --config pipeline.yml
+flowtask execute --config-file pipeline.yml
 ```
 
 Expected output:
 
 ```text
-Loaded 3 steps
-✅ write -> ./out.txt
+Executed pipeline: demo
+Tasks: 3
 ```
 
 ## CLI
 
-- `flowtask run --config <file>` runs a pipeline
-- `flowtask validate --config <file>` checks configuration
-- `flowtask plugins` lists built-ins
+- `flowtask execute --config-file <file>` runs a pipeline (.yml/.yaml/.json)
+- `flowtask validate --config-file <file>` checks configuration without running it
+- `flowtask plugins` lists built-in plugins
+- Add `--quiet` to suppress non-error output
 
 ## Configuration notes
 
-- You can reference prior outputs using `@<step>.<field>` (for example `@read.text`).
-- `transform` steps support `uppercase`, `lowercase`, and `replace`.
+- Root key is `pipeline` with a `name` and a list of `tasks`.
+- Each task needs a unique `id` and a `type` of `read_text`, `write_text`, or `transform`.
+- Use `@<task>.<field>` to reference prior outputs (for example `@read.text`).
+- Built-in transform plugins are `builtin:uppercase`, `builtin:lowercase`, and `builtin:replace` (requires `params.pattern` and `params.repl`).
+- Config files must be `.yml`, `.yaml`, or `.json`.
 
 ---
 
