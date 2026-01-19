@@ -1,0 +1,211 @@
+User: Role:
+You are a contributor asked to fix broken documentation examples
+and tutorials in an open-source repository.
+
+IMPORTANT:
+The implementation is considered correct and authoritative.
+Your task is to fix DOCUMENTATION ONLY.
+
+--------------------------------------------------------------------------------
+YOUR TASK
+--------------------------------------------------------------------------------
+
+1. Validate all examples and tutorials:
+- README usage examples
+- Tutorial documents
+- CLI or API examples
+
+2. Identify all examples that:
+- Fail to run
+- Use outdated APIs or flags
+- Omit required setup or configuration
+- Produce incorrect results
+
+3. Update documentation so that:
+- All examples can be followed successfully
+- Commands, parameters, and outputs match real behavior
+- Required setup steps are explicitly documented
+- No undocumented assumptions remain
+
+--------------------------------------------------------------------------------
+STRICT RULES
+--------------------------------------------------------------------------------
+
+- DO NOT change code behavior
+- DO NOT introduce new features
+- DO NOT guess undocumented behavior
+- If behavior is unclear, document it explicitly instead of assuming
+- Do NOT remove examples unless they are truly obsolete
+
+--------------------------------------------------------------------------------
+OUTPUT REQUIREMENTS
+--------------------------------------------------------------------------------
+
+You MUST provide:
+
+1. A list of all broken examples you identified
+   - File
+   - Section
+   - Reason the example failed
+
+2. Updated versions of:
+   - README.md
+   - Any tutorial or usage documents you modified
+
+3. A brief explanation of:
+   - How you validated examples
+   - Any ambiguities you chose not to resolve
+
+--------------------------------------------------------------------------------
+EVALUATION CRITERIA (IMPLICIT)
+--------------------------------------------------------------------------------
+
+You will be evaluated on:
+- Coverage of broken examples
+- Accuracy of fixes
+- Fidelity to actual behavior
+- Avoidance of speculation
+- Clarity and usability of updated docs
+
+IMPORTANT:
+Treat this as a real documentation fix,
+not a redesign or rewrite.
+
+GitHub Copilot: Read [](file:///c%3A/Users/v-quansenwen/work/Document/Example%26Tutorial-0119/oswe-large-m5a1s120-low/README.md)
+
+Read [](file:///c%3A/Users/v-quansenwen/work/Document/Example%26Tutorial-0119/oswe-large-m5a1s120-low/TUTORIAL.md)
+
+Read [](file:///c%3A/Users/v-quansenwen/work/Document/Example%26Tutorial-0119/oswe-large-m5a1s120-low/src/flowtask/cli.py)
+
+Read [](file:///c%3A/Users/v-quansenwen/work/Document/Example%26Tutorial-0119/oswe-large-m5a1s120-low/src/flowtask/config.py)
+
+Let me also read the remaining source files to fully understand the implementation: 
+
+Read [](file:///c%3A/Users/v-quansenwen/work/Document/Example%26Tutorial-0119/oswe-large-m5a1s120-low/src/flowtask/executor.py)
+
+Read [](file:///c%3A/Users/v-quansenwen/work/Document/Example%26Tutorial-0119/oswe-large-m5a1s120-low/src/flowtask/plugins.py)
+
+Read [](file:///c%3A/Users/v-quansenwen/work/Document/Example%26Tutorial-0119/oswe-large-m5a1s120-low/pyproject.toml)
+
+Now I have a complete understanding of the implementation. Let me summarize the discrepancies I found between the documentation and the actual code:
+
+## Broken Examples Identified
+
+| File | Section | Reason |
+|------|---------|--------|
+| README.md | Quickstart YAML | Uses `workflow` root key with `steps`, but code expects `pipeline` root key with `tasks` |
+| README.md | Quickstart YAML | Uses `name` for task IDs, but code expects `id` |
+| README.md | CLI | Uses `flowtask run --config`, but code uses `flowtask execute --config-file` |
+| README.md | CLI | Uses `flowtask validate --config`, but code uses `flowtask validate --config-file` |
+| README.md | Configuration notes | Says plugins are `uppercase`, `lowercase`, `replace`, but actual names are `builtin:uppercase`, `builtin:lowercase`, `builtin:replace` |
+| TUTORIAL.md | Section 1 | Uses `workflow` root key with `steps`, but code expects `pipeline` root key with `tasks` |
+| TUTORIAL.md | Section 1 | Uses `name` for task IDs, but code expects `id` |
+| TUTORIAL.md | Section 1 | Uses `flowtask validate --config`, but code uses `flowtask validate --config-file` |
+| TUTORIAL.md | Section 1 | Uses `flowtask run --config`, but code uses `flowtask execute --config-file` |
+| TUTORIAL.md | Section 2 | Says plugins are `uppercase`, `lowercase`, `replace`, but actual names include `builtin:` prefix |
+| TUTORIAL.md | Section 3 | Uses `flowtask run --config`, but code uses `flowtask execute --config-file` |
+| TUTORIAL.md | Section 4 | Uses `flowtask run --config ... --workers`, but `--workers` flag doesn't exist in the implementation |
+
+Let me now fix both documentation files: 
+
+Replacing 38 lines with 38 lines in [](file:///c%3A/Users/v-quansenwen/work/Document/Example%26Tutorial-0119/oswe-large-m5a1s120-low/README.md)
+
+
+```
+
+```
+
+
+Replacing 63 lines with 56 lines in [](file:///c%3A/Users/v-quansenwen/work/Document/Example%26Tutorial-0119/oswe-large-m5a1s120-low/TUTORIAL.md)
+
+
+```
+
+```
+Let me verify the updated documentation files: 
+
+Read [](file:///c%3A/Users/v-quansenwen/work/Document/Example%26Tutorial-0119/oswe-large-m5a1s120-low/README.md)
+
+Read [](file:///c%3A/Users/v-quansenwen/work/Document/Example%26Tutorial-0119/oswe-large-m5a1s120-low/TUTORIAL.md)
+
+The documentation has been updated. Let me also run a quick validation to confirm the CLI help matches what we documented: 
+
+Configuring a Python Environment
+Completed with input: {
+  "resourcePath": "c:\\Users\\v-quansenwen\\work\\Document\\Example&Tutorial-0119\\oswe-large-m5a1s120-low"
+}
+
+Creating a Virtual Environment
+Completed with input: {
+  "resourcePath": "c:\\Users\\v-quansenwen\\work\\Document\\Example&Tutorial-0119\\oswe-large-m5a1s120-low"
+}
+
+Ran terminal command:  pip install -e . -q && flowtask --help
+
+Ran terminal command:  "C:/Users/v-quansenwen/work/Document/Example&Tutorial-0119/oswe-large-m5a1s120-low/.venv/Scripts/python.exe" -m pip install -e . -q && "C:/Users/v-quansenwen/work/Document/Example&Tutorial-0119/oswe-large-m5a1s120-low/.venv/Scripts/python.exe" -m flowtask --help
+
+Ran terminal command:  "C:/Users/v-quansenwen/work/Document/Example&Tutorial-0119/oswe-large-m5a1s120-low/.venv/Scripts/python.exe" -m flowtask execute --help
+
+Ran terminal command:  "C:/Users/v-quansenwen/work/Document/Example&Tutorial-0119/oswe-large-m5a1s120-low/.venv/Scripts/python.exe" -m flowtask plugins
+
+The CLI help and plugins list confirm my documentation fixes are correct. Let me also verify the validate command: 
+
+Ran terminal command:  "C:/Users/v-quansenwen/work/Document/Example&Tutorial-0119/oswe-large-m5a1s120-low/.venv/Scripts/python.exe" -m flowtask validate --help
+
+All CLI commands are validated. Now let me create a test config file and run a quick end-to-end test to verify the examples work: 
+
+Ran terminal command:  echo "hello world" > input.txt
+
+Created [](file:///c%3A/Users/v-quansenwen/work/Document/Example%26Tutorial-0119/oswe-large-m5a1s120-low/pipeline.yml)
+
+Ran terminal command:  "C:/Users/v-quansenwen/work/Document/Example&Tutorial-0119/oswe-large-m5a1s120-low/.venv/Scripts/python.exe" -m flowtask validate --config-file pipeline.yml
+
+Ran terminal command:  "C:/Users/v-quansenwen/work/Document/Example&Tutorial-0119/oswe-large-m5a1s120-low/.venv/Scripts/python.exe" -m flowtask execute --config-file pipeline.yml
+
+The output matches exactly what I documented in the README. Let me clean up the test files: 
+
+Ran terminal command:  rm -f input.txt out.txt pipeline.yml
+
+---
+
+## Summary
+
+### Broken Examples Identified
+
+| File | Section | Reason |
+|------|---------|--------|
+| README.md | Quickstart YAML | Used `workflow` root key, but code expects `pipeline` |
+| README.md | Quickstart YAML | Used `steps` array, but code expects `tasks` |
+| README.md | Quickstart YAML | Used `name` for task identifiers, but code expects `id` |
+| README.md | Quickstart YAML | Used `uppercase` plugin, but actual name is `builtin:uppercase` |
+| README.md | Run command | Used `flowtask run --config`, but code uses `flowtask execute --config-file` |
+| README.md | Expected output | Showed `Loaded 3 steps` / `✅ write -> ./out.txt`, but actual output is `Executed pipeline: demo` / `Tasks: 3` |
+| README.md | CLI section | All commands used wrong subcommand names and flag names |
+| README.md | Configuration notes | Plugin names missing `builtin:` prefix |
+| TUTORIAL.md | Section 1 YAML | Same structure issues as README (workflow/steps/name vs pipeline/tasks/id) |
+| TUTORIAL.md | Section 1 YAML | Plugin names `replace` and `uppercase` missing `builtin:` prefix |
+| TUTORIAL.md | Section 1 commands | `flowtask validate --config` → should be `flowtask validate --config-file` |
+| TUTORIAL.md | Section 1 commands | `flowtask run --config` → should be `flowtask execute --config-file` |
+| TUTORIAL.md | Section 2 | Listed plugins as `uppercase`, `lowercase`, `replace` but actual names include `builtin:` prefix |
+| TUTORIAL.md | Section 3 | Used `flowtask run --config` → should be `flowtask execute --config-file` |
+| TUTORIAL.md | Section 4 | Documented `--workers` flag which does not exist in the implementation |
+
+### How Examples Were Validated
+
+1. **Read source code** to understand actual implementation:
+   - cli.py: Revealed correct CLI subcommands (`execute`, `validate`, `plugins`) and argument names (`--config-file`)
+   - config.py: Revealed correct YAML structure (`pipeline` root, `tasks` array, `id` field)
+   - plugins.py: Revealed correct plugin names (`builtin:uppercase`, `builtin:lowercase`, `builtin:replace`)
+   - executor.py: Revealed output format
+
+2. **Ran actual CLI commands** to confirm behavior:
+   - `flowtask --help` confirmed subcommand names
+   - `flowtask execute --help` confirmed `--config-file` argument
+   - `flowtask plugins` confirmed plugin names with `builtin:` prefix
+   - Created test pipeline and ran it to confirm output format
+
+### Ambiguities Not Resolved
+
+- The TUTORIAL Section 3 mentions JSON config format is supported, which is true per the code. However, no example JSON config structure is shown. I left this as-is since the YAML examples can be trivially converted to JSON and the code does support both formats.
+
+Made changes.
